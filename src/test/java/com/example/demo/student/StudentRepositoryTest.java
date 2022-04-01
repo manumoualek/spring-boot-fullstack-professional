@@ -3,6 +3,8 @@ package com.example.demo.student;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.assertj.core.api.Assertions.*;
+
 class StudentRepositoryTest {
 
     @Autowired
@@ -22,6 +24,7 @@ class StudentRepositoryTest {
         boolean exists = underTest.selectExistsEmail("manu@gmail.com");
 
      //then
-        assertThat()
+        assertThat(exists).isTrue();
+
     }
 }
