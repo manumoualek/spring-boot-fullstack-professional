@@ -21,10 +21,10 @@ class StudentRepositoryTest {
         underTest.save(student);
 
      //when
-        boolean exists = underTest.selectExistsEmail("manu@gmail.com");
+        boolean expected = underTest.selectExistsEmail("manu@gmail.com");
 
      //then
-        assertThat(exists).isTrue();
+        assertThat(expected).isTrue();
 
     }
 }
