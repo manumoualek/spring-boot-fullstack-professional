@@ -16,8 +16,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatExceptionOfType;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class StudentServiceTest {
@@ -71,8 +70,11 @@ class StudentServiceTest {
                 Gender.MALE
         );
 
-        given(studentRepository.selectExistsEmail(student.getEmail()))
-                .willReturn(true);
+        when(studentRepository.selectExistsEmail(student.getEmail())).thenReturn(true);
+
+
+//        given(studentRepository.selectExistsEmail(student.getEmail()))
+//                .willReturn(true);
 
         //when
         //then
@@ -110,22 +112,19 @@ class StudentServiceTest {
     @Test
     void throwsErrorWhenIdDoesNotExist() {
         //given
-        Student student = new Student(
-                "Manu",
-                "manu@gmail.com",
-                Gender.MALE
-        );
+        Long studentId = 1L;
 
-        given(studentRepository.existsById(student.getId()))
+        given(studentRepository.existsById(studentId))
                 .willReturn(false);
 
         //then
         //when
-        assertThatExceptionOfType(StudentNotFoundException.class).isThrownBy(() -> {
-                    underTest.deleteStudent(student.getId());
-                })
-                .withMessageContaining("Student with id " + student.getId() + " does not exists");
 
-        verify(studentRepository, never()).deleteById(student.getId());
+        assertThatExceptionOfType(StudentNotFoundException.class).isThrownBy(() -> {
+                    underTest.deleteStudent(studentId);
+                })
+                .withMessageContaining("Student with id " + studentId + " does not exists");
+
+        verify(studentRepository, never()).deleteById(studentId);
     }
 }
